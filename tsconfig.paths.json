@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "types": [
+        "../ToDoList_server/src/types"
+      ]
+    }
+  }
+}
