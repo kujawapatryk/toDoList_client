@@ -1,11 +1,19 @@
-import {ChangeEvent, useState } from 'react';
+import {ChangeEvent, useState, KeyboardEvent } from 'react';
 import { API_URL } from '../../config/api';
 import { snackbarMessage } from '../../utils/snackbar';
 import { Btn } from '../Btn/Btn';
 import './AddTask.scss';
 
-
-export const AddTask = () => {
+interface Props {
+    id: number;
+    content: string;
+    done: boolean;
+}
+type StateProps={
+    tasks: Props[];
+    setTasks: React.Dispatch<React.SetStateAction<Props[]>>;
+}
+export const AddTask = ({ tasks, setTasks }: StateProps) => {
 
     const [content, setContent] = useState('')
 
@@ -29,17 +37,34 @@ export const AddTask = () => {
             },
             body: JSON.stringify({content})
         });
+
         if(res.status === 201){
+            const createdTask = await res.json();
+
             setContent('');
+            setTasks([createdTask,...tasks]);
             snackbarMessage('taskAdded');
         }else
             snackbarMessage('addTaskError');
     }
 
+    const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            addTaskHandle();
+        }
+    };
+
     return(
         <>
             <div className="task-input">
-                <input type="text" id="taskContent" placeholder="Wprowadź treść zadania" value={content} onChange={contentHandle} />
+                <input
+                    type="text"
+                    id="taskContent"
+                    placeholder="Wprowadź treść zadania"
+                    value={content}
+                    onChange={contentHandle}
+                    onKeyPress={handleKeyPress} 
+                />
                     <button id="addTaskButton" onClick={addTaskHandle}>Dodaj zadanie</button>
 
             </div>
