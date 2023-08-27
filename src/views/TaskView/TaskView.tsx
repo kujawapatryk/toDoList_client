@@ -2,7 +2,6 @@ import {useEffect, useState } from 'react';
 import { AddTask } from '../../componensts/AddTask/AddTask'
 import { Tasks } from '../../componensts/Tasks/Tasks'
 import { API_URL } from '../../config/api';
-import { snackbarMessage } from '../../utils/snackbar';
 import './TaskView.scss'
 
 import {TasksInterface} from 'types';
