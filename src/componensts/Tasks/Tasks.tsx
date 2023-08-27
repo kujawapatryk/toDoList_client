@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { API_URL } from '../../config/api';
+import { message } from '../../utils/message';
 import { Btn } from '../Btn/Btn';
+import { SingleTask } from './SingleTask/SingleTask';
+import { snackbarMessage } from '../../utils/snackbar'
+import { useDeleteTask } from '../../utils/useDeleteTask';
 
-//import './Btn.scss';
+import './Tasks.scss';
 
 interface Props {
     id: number;
@@ -11,8 +15,7 @@ interface Props {
 }
 export const Tasks = () => {
 
-    const [tasksToDo , setTasksToDo] = useState<Props[]>([]);
-    const [tasksDone , setTasksDone] = useState<Props[]>([]);
+    const [tasks , setTasks] = useState<Props[]>([]);
 
     useEffect(() => {
         
@@ -22,21 +25,7 @@ export const Tasks = () => {
                });
             const data: Props[] = await res.json();
 
-            const groupedTasks: { done: Props[]; toDo: Props[] } = data.reduce(
-                (acc, task) => {
-                    if (task.done) {
-                        acc.done.push(task);
-                    } else {
-                        acc.toDo.push(task);
-                    }
-
-                    return acc;
-                },
-                { done: [], toDo: [] } as { done: Props[]; toDo: Props[] }
-            );
-
-           setTasksToDo(groupedTasks.toDo);
-           setTasksDone(groupedTasks.done);
+            setTasks(data);
         })();
 
     }, []);
@@ -45,28 +34,57 @@ export const Tasks = () => {
         const res = await fetch(`${API_URL}/tasks/${id}`, {
             method: 'PATCH',
         });
-        console.log(res)
+
+        if(res.status === 200){
+
+            const updatedTasks = tasks.map((task) =>
+                task.id === id ? { ...task, done: !task.done } : task
+            );
+
+            setTasks(updatedTasks);
+            snackbarMessage('taskConfirmation');
+
+        }
+        else
+            snackbarMessage('error');
     }
-    
-    
-    
+
+    const deleteTask = async (id: number):Promise<void> => {
+        const res = await fetch(`${API_URL}/tasks/${id}`, {
+            method: 'DELETE',
+        });
+
+        if(res.status === 200){
+            const taskIndex = tasks.findIndex(() => id = id);
+            if(taskIndex !== -1) {
+                const updatedTask = [...tasks];
+                updatedTask.splice(taskIndex, 1);
+                setTasks(updatedTask);
+                snackbarMessage('taskDeleted');
+            }
+            else
+                snackbarMessage('error');
+        }
+    }
+
     return (
         <>
-            Zadania do wykonania
-            {tasksToDo &&
-                tasksToDo.map((item, index) => (
-                    <div key={index}>
-                        <div>{item.content}</div>
-                        <div><Btn value="Zrobione" onClick={() =>markAsDone(item.id)} /></div>
-                    </div>
-            ))}
+            <div className="task-list">
+                <div className="task-title">Zadania do wykonania</div>
+                {tasks &&
+                    tasks.map((item, index) => (
+                        <SingleTask
+                            key={index}
+                            content={item.content}
 
-            Wykonanae zadania
-            {tasksDone &&
-                tasksDone.map((item, index) => (
-
-                    <div key={index}>{item.content}</div>
+                            btnValue={message.done.value}
+                            onClick={() =>deleteTask(item.id)}
+                            onClickCheckbox={() =>markAsDone(item.id)}
+                            done={item.done}
+                        />
                 ))}
+
+            </div>
         </>
     );
 };
