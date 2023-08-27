@@ -1,18 +1,32 @@
-import React from 'react';
+import React, { ChangeEventHandler, MouseEventHandler } from 'react';
+import { Btn } from '../../Btn/Btn';
 
-import './Btn.scss';
+import './SingleTask.scss';
+
 interface Props {
-    value: string;
-    onClick?: React.MouseEventHandler<HTMLInputElement>;
-    isClickable?: boolean;
+    content: string;
+    onClickCheckbox: ChangeEventHandler<HTMLInputElement>;
+    onClick: MouseEventHandler<HTMLInputElement>;
+    btnValue: string;
+    done: boolean;
 }
-export const SingleTask = ({ value, onClick, isClickable = true }: Props) => {
+export const SingleTask = ({ content, onClick, onClickCheckbox, btnValue, done }: Props) => {
     return (
-        <input
-            type="button"
-            className={`Button__input ${isClickable && 'Button__input--clickable'}`}
-            value={value}
-            onClick={onClick}
-        />
+
+        <div className={`task ${done ? 'task-done' : 'task-to-do'}`}>
+            <p className={`${done ? 'task-content task-content-done' : 'task-content'}`}>{content}</p>
+            <div className="task-actions">
+                <label className="checkbox-label">
+                    <input
+                        type="checkbox"
+                        checked={done}
+                        onChange={onClickCheckbox}
+                    />
+                    Wykonane
+                </label>
+                <Btn value="Usuń" onClick={onClick} />
+            </div>
+        </div>
+
     );
 };
