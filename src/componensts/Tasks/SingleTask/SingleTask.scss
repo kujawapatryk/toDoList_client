@@ -1,27 +1,4 @@
-//
-//.task {
-//  background-color: white;
-//  border-radius: 8px;
-//  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//  padding: 16px;
-//  display: flex;
-//  justify-content: space-between;
-//  align-items: center;
-//
-//  .task-content {
-//    flex: 1;
-//    font-size: 16px;
-//    color: #333;
-//  }
-//
-//}
-//.task-to-do {
-//  background-color: #f5f5f5; /* Kolor tła dla zadań do wykonania */
-//}
-//
-//.task-done {
-//  background-color: #b3e0b3; /* Kolor tła dla zadań zrobionych */
-//}
+@import '../../../variables';
 
 .task {
   background-color: white;
@@ -31,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 
   &-to-do {
     border-left: 4px solid #ff9800;
@@ -44,7 +21,7 @@
   .task-content {
     flex: 3;
     padding: 12px;
-    font-size: 16px;
+    font-size: $fs-lg;
     color: #333;
 
     &-done {
