@@ -1,17 +1,13 @@
 import {ChangeEvent, useState, KeyboardEvent } from 'react';
+import { TasksInterface } from 'types';
 import { API_URL } from '../../config/api';
 import { snackbarMessage } from '../../utils/snackbar';
 import { Btn } from '../Btn/Btn';
 import './AddTask.scss';
 
-interface Props {
-    id: number;
-    content: string;
-    done: boolean;
-}
 type StateProps={
-    tasks: Props[];
-    setTasks: React.Dispatch<React.SetStateAction<Props[]>>;
+    tasks: TasksInterface[];
+    setTasks: React.Dispatch<React.SetStateAction<TasksInterface[]>>;
 }
 export const AddTask = ({ tasks, setTasks }: StateProps) => {
 

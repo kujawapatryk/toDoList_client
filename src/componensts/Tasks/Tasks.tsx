@@ -5,19 +5,15 @@ import { SingleTask } from './SingleTask/SingleTask';
 import { snackbarMessage } from '../../utils/snackbar'
 
 import './Tasks.scss';
+import { TasksInterface } from 'types';
 
-interface Props {
-    id: number;
-    content: string;
-    done: boolean;
-}
 type ResMessage = {
     message: string;
     status: string;
 }
 type StateProps={
-    tasks: Props[];
-    setTasks: React.Dispatch<React.SetStateAction<Props[]>>;
+    tasks: TasksInterface[];
+    setTasks: React.Dispatch<React.SetStateAction<TasksInterface[]>>;
 }
 export const Tasks = ({ tasks, setTasks }: StateProps) => {
 

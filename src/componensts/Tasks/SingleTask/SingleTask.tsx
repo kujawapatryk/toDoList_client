@@ -1,4 +1,6 @@
 import React, { ChangeEventHandler, MouseEventHandler } from 'react';
+import { message } from '../../../utils/message';
+
 import { Btn } from '../../Btn/Btn';
 
 import './SingleTask.scss';
@@ -22,7 +24,7 @@ export const SingleTask = ({ content, onClick, onClickCheckbox, btnValue, done }
                         checked={done}
                         onChange={onClickCheckbox}
                     />
-                    Wykonane
+                    {message.done.value}
                 </label>
                 <Btn value="Usuń" onClick={onClick} />
             </div>

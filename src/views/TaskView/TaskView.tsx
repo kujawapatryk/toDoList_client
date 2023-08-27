@@ -5,15 +5,11 @@ import { API_URL } from '../../config/api';
 import { snackbarMessage } from '../../utils/snackbar';
 import './TaskView.scss'
 
-interface Props {
-    id: number;
-    content: string;
-    done: boolean;
-}
+import {TasksInterface} from 'types';
 
 export const TaskView = () =>{
 
-    const [tasks , setTasks] = useState<Props[]>([]);
+    const [tasks , setTasks] = useState<TasksInterface[]>([]);
 
     useEffect(() => {
 
@@ -21,8 +17,7 @@ export const TaskView = () =>{
             const res = await fetch(`${API_URL}/tasks`, {
                 method: 'GET',
             });
-            const data: Props[] = await res.json();
-            console.log(data);
+            const data: TasksInterface[] = await res.json();
             setTasks(data);
         })();
 
