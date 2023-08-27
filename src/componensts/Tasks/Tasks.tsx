@@ -11,28 +11,18 @@ interface Props {
     content: string;
     done: boolean;
 }
+type ResMessage = {
+    message: string;
+    status: string;
+}
 type StateProps={
     tasks: Props[];
     setTasks: React.Dispatch<React.SetStateAction<Props[]>>;
 }
 export const Tasks = ({ tasks, setTasks }: StateProps) => {
 
-    // const [tasks , setTasks] = useState<Props[]>([]);
-    //
-    // useEffect(() => {
-    //
-    //     (async () => {
-    //         const res = await fetch(`${API_URL}/tasks`, {
-    //             method: 'GET',
-    //            });
-    //         const data: Props[] = await res.json();
-    //
-    //         setTasks(data);
-    //     })();
-    //
-    // }, []);
-    //
     const markTask = async (id:number, done: boolean) =>{
+
         const res = await fetch(`${API_URL}/tasks/${id}`, {
             method: 'PATCH',
             headers: {
@@ -44,34 +34,47 @@ export const Tasks = ({ tasks, setTasks }: StateProps) => {
 
         if(res.status === 200){
 
-            const updatedTasks = tasks.map((task) =>
-                task.id === id ? { ...task, done: !task.done } : task
-            );
+            const data: ResMessage = await res.json();
+            if (data.status === 'success') {
 
-            setTasks(updatedTasks);
-            snackbarMessage('taskConfirmation');
+                const updatedTasks = tasks.map((task) =>
+                    task.id === id ? {...task, done: !task.done} : task
+                );
 
+                setTasks(updatedTasks);
+                snackbarMessage(data.message);
+            }
+            else
+                snackbarMessage(data.message);
         }
         else
-            snackbarMessage('error');
+            snackbarMessage('tryLater');
     }
 
     const deleteTask = async (id: number):Promise<void> => {
+
         const res = await fetch(`${API_URL}/tasks/${id}`, {
             method: 'DELETE',
         });
 
-        if(res.status === 200){
-            const taskIndex = tasks.findIndex(task => task.id === id);
-            if(taskIndex !== -1) {
-                const updatedTask = [...tasks];
-                updatedTask.splice(taskIndex, 1);
-                setTasks(updatedTask);
-                snackbarMessage('taskDeleted');
+        if(res.status === 200) {
+
+            const data: ResMessage = await res.json();
+            if (data.status === 'success') {
+
+                const taskIndex = tasks.findIndex(task => task.id === id);
+                if (taskIndex !== -1) {
+                    const updatedTask = [...tasks];
+                    updatedTask.splice(taskIndex, 1);
+                    setTasks(updatedTask);
+                    snackbarMessage(data.message);
+                }
             }
             else
-                snackbarMessage('error');
+                snackbarMessage('data.message');
         }
+        else
+            snackbarMessage('error');
     }
 
     return (
@@ -83,14 +86,12 @@ export const Tasks = ({ tasks, setTasks }: StateProps) => {
                     <SingleTask
                         key={index}
                         content={item.content}
-
                         btnValue={message.done.value}
                         onClick={() =>deleteTask(item.id)}
                         onClickCheckbox={() =>markTask(item.id, item.done)}
                         done={item.done}
                     />
             ))}
-
         </div>
 
     );

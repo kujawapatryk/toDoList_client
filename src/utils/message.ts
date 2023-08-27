@@ -16,4 +16,5 @@ export const message: Messages ={
     addTaskError: { value: 'Nie udało się dodać zadania. Spróbuj ponownie.', variant: 'error' },
     maxCharacterCount : {value: 'Maksymalna ilość znaków to 120', variant: 'warning' },
     emptyFieldError: { value: 'Pole zadanie nie może być puste.', variant: 'error' },
+    tryLater: { value: 'Coś poszło nie tak. Spróbuj później.', variant: 'error' },
 }

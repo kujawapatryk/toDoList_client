@@ -22,12 +22,12 @@ export const TaskView = () =>{
                 method: 'GET',
             });
             const data: Props[] = await res.json();
-
+            console.log(data);
             setTasks(data);
         })();
 
     }, []);
-    
+
     return(
         <>
             <div className="tasks-container">
