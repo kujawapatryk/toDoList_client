@@ -1,0 +1,93 @@
+//
+//.task {
+//  background-color: white;
+//  border-radius: 8px;
+//  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//  padding: 16px;
+//  display: flex;
+//  justify-content: space-between;
+//  align-items: center;
+//
+//  .task-content {
+//    flex: 1;
+//    font-size: 16px;
+//    color: #333;
+//  }
+//
+//}
+//.task-to-do {
+//  background-color: #f5f5f5; /* Kolor tła dla zadań do wykonania */
+//}
+//
+//.task-done {
+//  background-color: #b3e0b3; /* Kolor tła dla zadań zrobionych */
+//}
+
+.task {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  &-to-do {
+    border-left: 4px solid #ff9800;
+  }
+
+  &-done {
+    border-left: 4px solid #4caf50;
+  }
+
+  .task-content {
+    flex: 3;
+    padding: 12px;
+    font-size: 16px;
+    color: #333;
+
+    &-done {
+      text-decoration: line-through;
+    }
+
+    &::before {
+      content: 'Zadanie: ';
+      font-weight: bold;
+      color: #777;
+
+    }
+  }
+
+  .task-actions {
+    display: flex;
+    align-items: center;
+
+    label.checkbox-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      font-size: 14px;
+      color: #777;
+
+      input[type='checkbox'] {
+        margin-right: 6px;
+      }
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}
