@@ -4,7 +4,6 @@ import { message } from '../../utils/message';
 import { Btn } from '../Btn/Btn';
 import { SingleTask } from './SingleTask/SingleTask';
 import { snackbarMessage } from '../../utils/snackbar'
-import { useDeleteTask } from '../../utils/useDeleteTask';
 
 import './Tasks.scss';
 
