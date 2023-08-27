@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { API_URL } from '../../config/api';
 import { message } from '../../utils/message';
-import { Btn } from '../Btn/Btn';
 import { SingleTask } from './SingleTask/SingleTask';
 import { snackbarMessage } from '../../utils/snackbar'
 
@@ -12,27 +11,36 @@ interface Props {
     content: string;
     done: boolean;
 }
-export const Tasks = () => {
+type StateProps={
+    tasks: Props[];
+    setTasks: React.Dispatch<React.SetStateAction<Props[]>>;
+}
+export const Tasks = ({ tasks, setTasks }: StateProps) => {
 
-    const [tasks , setTasks] = useState<Props[]>([]);
-
-    useEffect(() => {
-        
-        (async () => {
-            const res = await fetch(`${API_URL}/tasks`, {
-                method: 'GET',
-               });
-            const data: Props[] = await res.json();
-
-            setTasks(data);
-        })();
-
-    }, []);
-
-    const markAsDone = async (id:number) =>{
+    // const [tasks , setTasks] = useState<Props[]>([]);
+    //
+    // useEffect(() => {
+    //
+    //     (async () => {
+    //         const res = await fetch(`${API_URL}/tasks`, {
+    //             method: 'GET',
+    //            });
+    //         const data: Props[] = await res.json();
+    //
+    //         setTasks(data);
+    //     })();
+    //
+    // }, []);
+    //
+    const markTask = async (id:number, done: boolean) =>{
         const res = await fetch(`${API_URL}/tasks/${id}`, {
             method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({done: !done})
         });
+
 
         if(res.status === 200){
 
@@ -54,7 +62,7 @@ export const Tasks = () => {
         });
 
         if(res.status === 200){
-            const taskIndex = tasks.findIndex(() => id = id);
+            const taskIndex = tasks.findIndex(task => task.id === id);
             if(taskIndex !== -1) {
                 const updatedTask = [...tasks];
                 updatedTask.splice(taskIndex, 1);
@@ -67,23 +75,23 @@ export const Tasks = () => {
     }
 
     return (
-        <>
-            <div className="task-list">
-                <div className="task-title">Zadania do wykonania</div>
-                {tasks &&
-                    tasks.map((item, index) => (
-                        <SingleTask
-                            key={index}
-                            content={item.content}
 
-                            btnValue={message.done.value}
-                            onClick={() =>deleteTask(item.id)}
-                            onClickCheckbox={() =>markAsDone(item.id)}
-                            done={item.done}
-                        />
-                ))}
+        <div className="task-list">
+            <div className="task-title">Zadania do wykonania</div>
+            {tasks &&
+                tasks.map((item, index) => (
+                    <SingleTask
+                        key={index}
+                        content={item.content}
 
-            </div>
-        </>
+                        btnValue={message.done.value}
+                        onClick={() =>deleteTask(item.id)}
+                        onClickCheckbox={() =>markTask(item.id, item.done)}
+                        done={item.done}
+                    />
+            ))}
+
+        </div>
+
     );
 };
