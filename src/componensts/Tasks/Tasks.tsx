@@ -27,7 +27,6 @@ export const Tasks = ({ tasks, setTasks }: StateProps) => {
             body: JSON.stringify({done: !done})
         });
 
-
         if(res.status === 200){
 
             const data: ResMessage = await res.json();
@@ -44,7 +43,7 @@ export const Tasks = ({ tasks, setTasks }: StateProps) => {
                 snackbarMessage(data.message);
         }
         else
-            snackbarMessage('tryLater');
+            snackbarMessage('error');
     }
 
     const deleteTask = async (id: number):Promise<void> => {
@@ -60,6 +59,7 @@ export const Tasks = ({ tasks, setTasks }: StateProps) => {
 
                 const taskIndex = tasks.findIndex(task => task.id === id);
                 if (taskIndex !== -1) {
+
                     const updatedTask = [...tasks];
                     updatedTask.splice(taskIndex, 1);
                     setTasks(updatedTask);
@@ -67,7 +67,7 @@ export const Tasks = ({ tasks, setTasks }: StateProps) => {
                 }
             }
             else
-                snackbarMessage('data.message');
+                snackbarMessage(data.message);
         }
         else
             snackbarMessage('error');

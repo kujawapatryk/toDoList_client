@@ -23,6 +23,7 @@ export const SingleTask = ({ content, onClick, onClickCheckbox, btnValue, done }
                         type="checkbox"
                         checked={done}
                         onChange={onClickCheckbox}
+                        className="task-checkbox"
                     />
                     {message.done.value}
                 </label>
