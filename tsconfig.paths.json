@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "types": [
-        "../ToDoList_server/src/types"
+//        "../ToDoList_server/src/types" // Development Version
+        "./types" // Production Version
       ]
     }
   }
