@@ -1,0 +1,5 @@
+node_modules
+*.log
+api/*
+!api/src/types
+build
