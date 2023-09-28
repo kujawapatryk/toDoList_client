@@ -10,6 +10,7 @@
     "@types/node": "^16.18.41",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
+    "axios": "^1.5.1",
     "cypress": "^13.0.0",
     "notistack": "^3.0.1",
     "react": "^18.2.0",
