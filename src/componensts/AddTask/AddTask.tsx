@@ -1,9 +1,11 @@
-import {ChangeEvent, useState, KeyboardEvent } from 'react';
+import React, {ChangeEvent, useState, KeyboardEvent } from 'react';
 import { TasksInterface } from 'types';
 import { API_URL } from '../../config/api';
 import { snackbarMessage } from '../../utils/snackbar';
+import axios from "axios";
 
 import './AddTask.scss';
+
 
 type StateProps={
     tasks: TasksInterface[];
@@ -26,27 +28,23 @@ export const AddTask = ({ tasks, setTasks }: StateProps) => {
             snackbarMessage('emptyFieldError');
             return;
         }
-        const res = await fetch(`${API_URL}/tasks/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({content})
-        });
 
-        if(res.status === 201){
-            const createdTask = await res.json();
+        const res = await axios.post(`${API_URL}/tasks/`,{content});
 
-            setContent('');
-            setTasks([createdTask,...tasks]);
-            snackbarMessage('taskAdded');
-        }else
-            snackbarMessage('addTaskError');
+            if (res.status === 201) {
+                const createdTask = await res.data;
+
+                setContent('');
+                setTasks([createdTask, ...tasks]);
+                snackbarMessage('taskAdded');
+            } else
+                snackbarMessage('addTaskError');
+
     }
 
-    const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyPress =async (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            addTaskHandle();
+            await addTaskHandle();
         }
     };
 
