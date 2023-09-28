@@ -2,9 +2,13 @@ import {useEffect, useState } from 'react';
 import { AddTask } from '../../componensts/AddTask/AddTask'
 import { Tasks } from '../../componensts/Tasks/Tasks'
 import { API_URL } from '../../config/api';
+import axios from "axios";
+import {TasksInterface} from 'types';
+
 import './TaskView.scss'
 
-import {TasksInterface} from 'types';
+
+
 
 export const TaskView = () =>{
 
@@ -13,14 +17,13 @@ export const TaskView = () =>{
     useEffect(() => {
 
         (async () => {
-            const res = await fetch(`${API_URL}/tasks`, {
-                method: 'GET',
-            });
-            const data: TasksInterface[] = await res.json();
+            const res = await axios.get(`${API_URL}/tasks`);
+            const data: TasksInterface[] = await res.data;
             setTasks(data);
         })();
 
     }, []);
+
 
     return(
         <>
