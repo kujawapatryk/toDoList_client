@@ -5,6 +5,8 @@ ToDoList is an application created as part of a recruitment task for the Fullsta
 
 [See the live version](https://todo.heyweb.pl/)
 
+![ToDoList Application in Action](https://github.com/kujawapatryk/kujawapatryk/blob/main/toDoList.gif)
+
 ## Features
 - Adding a new task to the list.
 - Deleting a task from the list.
